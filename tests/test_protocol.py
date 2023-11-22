@@ -1,6 +1,6 @@
 import pytest
 
-from myredis.protocol import extract_frame_from_stream
+from myredis.protocol import extract_frame_from_stream,encode_message
 from myredis.types_1 import (
     Array,
     BulkString,
@@ -82,3 +82,7 @@ def test_read_frame(buffer, expected):
 def test_encode_message(message, expected):
     encoded_message = encode_message(message)
     assert encoded_message == expected
+
+def test_encode_simple_string():
+    input = SimpleString("Hello")
+    assert "+Hello\r\n".encode() == encode_message(input)
